@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using NetEti.Globals;
-using NetEti.ApplicationControl;
+﻿using System.Linq;
 using Vishnu.Interchange;
 using DemoWPFCanRunDialog.ViewModel;
 using System.Windows;

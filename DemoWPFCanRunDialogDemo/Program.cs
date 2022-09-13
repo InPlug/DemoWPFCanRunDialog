@@ -1,8 +1,6 @@
 ﻿using System;
-using NetEti.Globals;
 using System.Windows;
 using Vishnu.Interchange;
-using System.Collections.Generic;
 
 namespace DemoWPFCanRunDialog
 {

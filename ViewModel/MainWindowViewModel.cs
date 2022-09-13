@@ -1,7 +1,4 @@
-﻿using System;
-using NetEti.MVVMini;
-using System.Windows.Input;
-using System.Windows;
+﻿using NetEti.MVVMini;
 
 namespace DemoWPFCanRunDialog.ViewModel
 {
