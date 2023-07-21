@@ -41,12 +41,12 @@ namespace DemoWPFCanRunDialog.Model
         /// Übernimmt minimale Steuerungsmöglichkeiten für die konkret
         /// geladene UI vom ViewModel. Wird vom ViewModel gesetzt.
         /// </summary>
-        public IMinimumDialogServer DialogServer { get; set; }
+        public IMinimumDialogServer? DialogServer { get; set; }
 
         /// <summary>
         /// Wird aufgerufen, wenn sich der Verarbeitungszustand eines Knotens geändert hat.
         /// </summary>
-        public event StateChangedEventHandler StateChanged;
+        public event StateChangedEventHandler? StateChanged;
 
         /// <summary>
         /// Id des aufrufenden Knoten aus Vishnu.
@@ -94,7 +94,7 @@ namespace DemoWPFCanRunDialog.Model
         {
             this.ModelState = State.Breaked;
             this.DialogResult = false;
-            this.DialogServer.WaitAndClose(500, false); // Das Window ist schon geschlossen!
+            this.DialogServer?.WaitAndClose(500, false); // Das Window ist schon geschlossen!
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace DemoWPFCanRunDialog.Model
         {
             this.ModelState = State.Done;
             this.DialogResult = true;
-            this.DialogServer.WaitAndClose(500, false);
+            this.DialogServer?.WaitAndClose(500, false);
         }
 
         /// <summary>
@@ -129,10 +129,7 @@ namespace DemoWPFCanRunDialog.Model
         /// </summary>
         internal virtual void OnStateChanged()
         {
-            if (StateChanged != null)
-            {
-                StateChanged(this, this.ModelState);
-            }
+            StateChanged?.Invoke(this, this.ModelState);
         }
 
         private State _modelState;

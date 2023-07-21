@@ -18,13 +18,13 @@ namespace DemoWPFCanRunDialog
         /// <param name="treeParameters">Für den gesamten Tree gültige Parameter oder null.</param>
         /// <param name="source">Auslösendes TreeEvent oder null.</param>
         /// <returns>True, wenn der Knoten (Checker) gestartet werden darf.</returns>
-        public bool CanRun(ref object parameters, TreeParameters treeParameters, TreeEvent source)
+        public bool CanRun(ref object? parameters, TreeParameters treeParameters, TreeEvent source)
         {
             // Parameterübernahme
             string callingNodeId = source.NodeName;
             if (source.Results != null && source.Results.Count > 0)
             {
-                Result lastResult = source.Results.First().Value;
+                Result? lastResult = source.Results.First().Value;
             }
 
             // Die Haupt-Klasse der Geschäftslogik
@@ -54,19 +54,13 @@ namespace DemoWPFCanRunDialog
             {
                 rtn = true;
             }
-
-            this._mainWindow = null;
-            this._mainWindowViewModel = null;
-            this._mainBusinessLogicViewModel = null;
-            this._mainBusinessLogic = null;
-
             return rtn;
         }
 
-        private View.MainWindow _mainWindow;
-        private Model.MainBusinessLogic _mainBusinessLogic;
-        private ViewModel.MainBusinessLogicViewModel _mainBusinessLogicViewModel;
-        private ViewModel.MainWindowViewModel _mainWindowViewModel;
+        private View.MainWindow? _mainWindow;
+        private Model.MainBusinessLogic? _mainBusinessLogic;
+        private MainBusinessLogicViewModel? _mainBusinessLogicViewModel;
+        private MainWindowViewModel? _mainWindowViewModel;
 
     }
 }

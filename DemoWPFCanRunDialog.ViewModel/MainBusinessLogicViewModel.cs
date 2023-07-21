@@ -3,10 +3,10 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using System.Windows;
 using NetEti.MVVMini;
-using DemoWPFCanRunDialog.Model;
 using System.Threading;
 using System.Threading.Tasks;
 using Model;
+using DemoWPFCanRunDialog.Model;
 
 namespace DemoWPFCanRunDialog.ViewModel
 {
@@ -33,16 +33,17 @@ namespace DemoWPFCanRunDialog.ViewModel
         public void WaitAndClose(int millisecondsDelay, bool dialogResult)
         {
             this._canHandleCmdBreak = false;
-            if (this._uIMain != null && this._uIMain is Window && !(this._uIMain as Window).DialogResult.HasValue)
+            if (this._uIMain != null && this._uIMain is Window && !((Window)this._uIMain).DialogResult.HasValue)
             {
                 CommandManager.InvalidateRequerySuggested();
                 new TaskFactory().StartNew(new Action(() =>
                 {
                     Thread.Sleep(millisecondsDelay);
                     if (this.Dispatcher.CheckAccess())
-                        (this._uIMain as Window).DialogResult = true;
+                        ((Window)this._uIMain).DialogResult = true;
                     else
-                        this.Dispatcher.Invoke(DispatcherPriority.Normal, new ThreadStart(new Action(() => { (this._uIMain as Window).DialogResult = dialogResult; })));
+                        this.Dispatcher.Invoke(DispatcherPriority.Normal,
+                            new ThreadStart(new Action(() => { ((Window)this._uIMain).DialogResult = dialogResult; })));
                 }));
             }
         }
@@ -81,12 +82,12 @@ namespace DemoWPFCanRunDialog.ViewModel
         /// <summary>
         /// Command für den CmdTrue-Button in der MainBusinessLogic.
         /// </summary>
-        public ICommand CmdOk { get { return this._cmdOkMainBusinessLogicRelayCommand; } }
+        public ICommand? CmdOk { get { return this._cmdOkMainBusinessLogicRelayCommand; } }
 
         /// <summary>
         /// Command für den Break-Button im der MainBusinessLogic.
         /// </summary>
-        public ICommand CmdBreak { get { return this._cmdBreakMainBusinessLogicRelayCommand; } }
+        public ICommand? CmdBreak { get { return this._cmdBreakMainBusinessLogicRelayCommand; } }
 
         #endregion published members
 
@@ -103,8 +104,8 @@ namespace DemoWPFCanRunDialog.ViewModel
             {
                 this._uIDispatcher = this._uIMain.Dispatcher;
             }
-            this._cmdOkMainBusinessLogicRelayCommand = new RelayCommand(cmdOkMainBusinessLogicExecute, canCmdOkMainBusinessLogicExecute);
-            this._cmdBreakMainBusinessLogicRelayCommand = new RelayCommand(cmdBreakMainBusinessLogicExecute, canCmdBreakMainBusinessLogicExecute);
+            this._cmdOkMainBusinessLogicRelayCommand = new RelayCommand(CmdOkMainBusinessLogicExecute, canCmdOkMainBusinessLogicExecute);
+            this._cmdBreakMainBusinessLogicRelayCommand = new RelayCommand(CmdBreakMainBusinessLogicExecute, CanCmdBreakMainBusinessLogicExecute);
 
             this._root.StateChanged -= this.mainBusinessLogicStateChanged;
             this._root.StateChanged += this.mainBusinessLogicStateChanged;
@@ -116,24 +117,22 @@ namespace DemoWPFCanRunDialog.ViewModel
         #region private members
 
         private MainBusinessLogic _root;
-        private RelayCommand _cmdOkMainBusinessLogicRelayCommand;
-        private RelayCommand _cmdBreakMainBusinessLogicRelayCommand;
-        private FrameworkElement _uIMain { get; set; }
+        private RelayCommand? _cmdOkMainBusinessLogicRelayCommand;
+        private RelayCommand? _cmdBreakMainBusinessLogicRelayCommand;
+        private FrameworkElement? _uIMain { get; set; }
         private bool _canHandleCmdBreak;
-        private System.Windows.Threading.Dispatcher _uIDispatcher { get; set; }
+        private System.Windows.Threading.Dispatcher? _uIDispatcher { get; set; }
 
-        private MainBusinessLogicViewModel() { }
-
-        private void mainBusinessLogicStateChanged(object sender, State state)
+        private void mainBusinessLogicStateChanged(object? sender, State state)
         {
             this.RaisePropertyChanged("CallingNodeId");
             // Die Buttons müssen zum Update gezwungen werden, da die Verarbeitung in einem
             // anderen Thread läuft:
-            this._cmdOkMainBusinessLogicRelayCommand.UpdateCanExecuteState(this.Dispatcher);
-            this._cmdBreakMainBusinessLogicRelayCommand.UpdateCanExecuteState(this.Dispatcher);
+            this._cmdOkMainBusinessLogicRelayCommand?.UpdateCanExecuteState(this.Dispatcher);
+            this._cmdBreakMainBusinessLogicRelayCommand?.UpdateCanExecuteState(this.Dispatcher);
         }
 
-        private void cmdOkMainBusinessLogicExecute(object parameter)
+        private void CmdOkMainBusinessLogicExecute(object? parameter)
         {
             this._root.HandleCmdOk();
         }
@@ -143,12 +142,12 @@ namespace DemoWPFCanRunDialog.ViewModel
             return this._root.CanHandleCmdOk();
         }
 
-        private void cmdBreakMainBusinessLogicExecute(object parameter)
+        private void CmdBreakMainBusinessLogicExecute(object? parameter)
         {
             this._root.HandleCmdBreak();
         }
 
-        private bool canCmdBreakMainBusinessLogicExecute()
+        private bool CanCmdBreakMainBusinessLogicExecute()
         {
             return this._canHandleCmdBreak && this._root.CanHandleCmdBreak();
         }

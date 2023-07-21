@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
@@ -18,7 +15,7 @@ namespace Behaviors
     /// </remarks>
     public static class WindowBehaviours
     {
-        private static DependencyProperty _windowClosedCommandProperty;
+        private static DependencyProperty? _windowClosedCommandProperty;
 
         /// <summary>
         /// Attached Property für das Closed-Event eines Windows.
@@ -50,7 +47,7 @@ namespace Behaviors
 
         static void WindowClosedCallBack(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
-            Window element = obj as Window;
+            Window element = (Window)obj;
 
             _windowClosedCommandProperty = args.Property;
 
@@ -72,11 +69,11 @@ namespace Behaviors
         /// </summary>
         /// <param name="sender">Das Command.</param>
         /// <param name="e">Argumente.</param>
-        public static void WindowClosedEventHandler(object sender, EventArgs e)
+        public static void WindowClosedEventHandler(object? sender, EventArgs e)
         {
-            DependencyObject obj = sender as DependencyObject;
+            DependencyObject? obj = (DependencyObject?)sender;
 
-            ICommand command = obj.GetValue(_windowClosedCommandProperty) as ICommand;
+            ICommand? command = obj?.GetValue(_windowClosedCommandProperty) as ICommand;
             if (command != null)
             {
                 if (command.CanExecute(e))

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <Title>$(AssemblyName) - MVVM Model für DemoWPFCanRunDialog</Title>
+    <Authors>Erik Nagel</Authors>
+    <Company>NetEti</Company>
+    <Description>$(AssemblyName) - MVVM Model für DemoWPFCanRunDialog</Description>
+    <Copyright>Copyright © $(Authors) 2015-2023</Copyright>
+    <AssemblyVersion>7.0.1.1</AssemblyVersion>
+    <FileVersion>7.0.1.1</FileVersion>
+  </PropertyGroup>
+
+</Project>
